@@ -31,34 +31,86 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl restart redis
 
+# Global settings
 global
     log /dev/log local0
-    maxconn 2000
+    log /dev/log local1 notice
+    chroot /var/lib/haproxy
+    stats socket /run/haproxy/admin.sock mode 660 level admin
+    stats timeout 30s
     user haproxy
     group haproxy
     daemon
+    maxconn 4096
+    tune.ssl.default-dh-param 2048
 
+# Default settings
 defaults
     log global
-    mode tcp
+    option dontlognull
+    timeout connect 5s
+    timeout client 30s
+    timeout server 30s
+    option redispatch
+    retries 3
+    option tcpka
     option tcplog
-    timeout connect 5000ms
-    timeout client 50000ms
-    timeout server 50000ms
+    mode tcp
+    option dontlog-normal
 
-frontend redis_frontend
-    bind *:6379
-    default_backend redis_master
+# Define Redis Sentinel monitoring
+frontend redis_sentinel_frontend
+    bind 0.0.0.0:26379
+    mode tcp
+    default_backend redis_sentinel_backend
 
-backend redis_master
+backend redis_sentinel_backend
+    mode tcp
+    balance roundrobin
     option tcp-check
-    server redis_sentinel1 <SENTINEL_IP1>:26379 check
-    server redis_sentinel2 <SENTINEL_IP2>:26379 check
-    option httpchk GET /
-    http-check send meth GET uri /
-    http-check expect status 200
-    http-check send meth GET uri /sentinel/master/<YOUR_REDIS_MASTER_NAME>
-    http-check expect status 200
+    tcp-check connect
+    tcp-check send sentinel\ get-master-addr-by-name\ <master-name>\r\n
+    tcp-check expect string <expected-master-ip>  # Example: xxx.xxx.xxx.101
+    tcp-check send QUIT\r\n
+    tcp-check expect string +OK
+
+# Define Redis master/replica configuration
+listen Redis_Masters
+    bind 0.0.0.0:6379
+    mode tcp
+    maxconn 512
+    timeout client 30s
+    timeout server 30s
+    timeout tunnel 12s
+
+    option tcp-smart-accept
+    option tcp-smart-connect
+    option tcpka
+    option tcplog
+    option tcp-check
+
+    balance leastconn
+
+    # Check for the Redis master dynamically via Sentinel
+    tcp-check send PING\r\n
+    tcp-check expect string +PONG
+    tcp-check send info\ replication\r\n
+    tcp-check expect string role:master
+    tcp-check send QUIT\r\n
+    tcp-check expect string +OK
+
+    # Monitor the Redis instances, using Sentinel to find the actual master
+    server REDIS01 xxx.xxx.xxx.101:6379 check port 6379 fall 3 rise 3 on-marked-down shutdown-sessions
+    server REDIS02 xxx.xxx.xxx.102:6379 check port 6379 fall 3 rise 3 on-marked-down shutdown-sessions
+
+# Define a stats page (optional, for monitoring HAProxy)
+listen stats
+    bind 0.0.0.0:8404
+    mode http
+    stats enable
+    stats uri /haproxy?stats
+    stats refresh 10s
+    stats admin if LOCALHOST
 
 
 
