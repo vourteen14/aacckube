@@ -31,4 +31,31 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl restart redis
 
-redis-cli --cluster create <IP1>:6379 <IP2>:6379 --cluster-replicas 1
+global
+    log /dev/log local0
+    maxconn 2000
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log global
+    mode tcp
+    option tcplog
+    timeout connect 5000ms
+    timeout client 50000ms
+    timeout server 50000ms
+
+frontend redis_frontend
+    bind *:6379
+    default_backend redis_master
+
+backend redis_master
+    option tcp-check
+    server redis_sentinel1 <SENTINEL_IP1>:26379 check
+    server redis_sentinel2 <SENTINEL_IP2>:26379 check
+    option httpchk GET /
+    http-check send meth GET uri /
+    http-check expect status 200
+    http-check send meth GET uri /sentinel/master/<YOUR_REDIS_MASTER_NAME>
+    http-check expect status 200
