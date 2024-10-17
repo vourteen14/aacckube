@@ -23,8 +23,8 @@ Description=Redis In-Memory Data Store
 After=network.target
 
 [Service]
-User=redis
-Group=redis
+User=root
+Group=root
 ExecStart=/usr/bin/redis-server /etc/redis/redisd.conf
 ExecStop=/usr/bin/redis-cli shutdown
 Restart=always
