@@ -35,3 +35,5 @@ EOF
 
 sudo systemctl daemon-reload
 sudo systemctl restart redis
+
+redis-cli --cluster create <IP1>:6379 <IP2>:6379 --cluster-replicas 1
