@@ -59,3 +59,51 @@ backend redis_master
     http-check expect status 200
     http-check send meth GET uri /sentinel/master/<YOUR_REDIS_MASTER_NAME>
     http-check expect status 200
+
+
+
+import redis
+
+# Connect to Redis
+def connect_redis(host='localhost', port=6379, db=0):
+    try:
+        client = redis.StrictRedis(host=host, port=port, db=db, decode_responses=True)
+        # Test the connection
+        client.ping()
+        print("Connected to Redis")
+        return client
+    except redis.ConnectionError as e:
+        print(f"Redis connection error: {e}")
+        return None
+
+# Write data to Redis
+def write_to_redis(client, key, value):
+    try:
+        client.set(key, value)
+        print(f"Data written: {key} -> {value}")
+    except Exception as e:
+        print(f"Error writing to Redis: {e}")
+
+# Read data from Redis
+def read_from_redis(client, key):
+    try:
+        value = client.get(key)
+        if value:
+            print(f"Data read: {key} -> {value}")
+        else:
+            print(f"{key} does not exist.")
+        return value
+    except Exception as e:
+        print(f"Error reading from Redis: {e}")
+        return None
+
+if __name__ == "__main__":
+    # Connect to Redis server
+    redis_client = connect_redis(host='localhost', port=6379, db=0)
+    
+    if redis_client:
+        # Example write
+        write_to_redis(redis_client, 'sample_key', 'Hello, Redis!')
+
+        # Example read
+        read_from_redis(redis_client, 'sample_key')
