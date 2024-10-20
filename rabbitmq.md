@@ -48,13 +48,51 @@ systemctl restart haproxy
 # TODO haproxy logging
 
 cat > /etc/yum.repos.d/esl-erlang.repo << "EOF"
-[erlang-solutions]
-name=Centos 9 - x86_64 - Erlang Solutions
-baseurl=http://binaries.erlang-solutions.com/rpm/centos/9/x86_64
-gpgcheck=1
-gpgkey=http://binaries.erlang-solutions.com/debian/erlang_solutions.asc
+[modern-erlang]
+name=modern-erlang-el9
+baseurl=https://yum1.rabbitmq.com/erlang/el/9/$basearch
+        https://yum2.rabbitmq.com/erlang/el/9/$basearch
+repo_gpgcheck=1
 enabled=1
-EOF
+gpgkey=https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-erlang.E495BB49CC4BBE5B.key
+gpgcheck=1
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+metadata_expire=300
+pkg_gpgcheck=1
+autorefresh=1
+type=rpm-md
+
+[modern-erlang-noarch]
+name=modern-erlang-el9-noarch
+baseurl=https://yum1.rabbitmq.com/erlang/el/9/noarch
+        https://yum2.rabbitmq.com/erlang/el/9/noarch
+repo_gpgcheck=1
+enabled=1
+gpgkey=https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-erlang.E495BB49CC4BBE5B.key
+       https://github.com/rabbitmq/signing-keys/releases/download/3.0/rabbitmq-release-signing-key.asc
+gpgcheck=1
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+metadata_expire=300
+pkg_gpgcheck=1
+autorefresh=1
+type=rpm-md
+
+[modern-erlang-source]
+name=modern-erlang-el9-source
+baseurl=https://yum1.rabbitmq.com/erlang/el/9/SRPMS
+        https://yum2.rabbitmq.com/erlang/el/9/SRPMS
+repo_gpgcheck=1
+enabled=1
+gpgkey=https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-erlang.E495BB49CC4BBE5B.key
+       https://github.com/rabbitmq/signing-keys/releases/download/3.0/rabbitmq-release-signing-key.asc
+gpgcheck=1
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+metadata_expire=300
+pkg_gpgcheck=1
+autorefresh=1
 
 rpm --import https://www.rabbitmq.com/rabbitmq-signing-key-public.asc
 
