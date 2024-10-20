@@ -47,6 +47,22 @@ systemctl restart haproxy
 
 # TODO haproxy logging
 
+cat > /etc/yum.repos.d/esl-erlang.repo << "EOF"
+[erlang-solutions]
+name=Centos 9 - x86_64 - Erlang Solutions
+baseurl=http://binaries.erlang-solutions.com/rpm/centos/9/x86_64
+gpgcheck=1
+gpgkey=http://binaries.erlang-solutions.com/debian/erlang_solutions.asc
+enabled=1
+EOF
+
+rpm --import https://www.rabbitmq.com/rabbitmq-signing-key-public.asc
+
+# download installer
+wget https://www.rabbitmq.com/releases/rabbitmq-server/v3.6.1/rabbitmq-server-3.6.1-1.noarch.rpm
+
+# install rabbitmq
+yum install rabbitmq-server-3.6.1-1.noarch.rpm
 
 ## basic installations
 # add erlang repo
