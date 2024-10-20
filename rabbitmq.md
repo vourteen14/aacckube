@@ -94,6 +94,56 @@ metadata_expire=300
 pkg_gpgcheck=1
 autorefresh=1
 
+
+[rabbitmq-el9]
+name=rabbitmq-el9
+baseurl=https://yum2.rabbitmq.com/rabbitmq/el/9/$basearch
+        https://yum1.rabbitmq.com/rabbitmq/el/9/$basearch
+repo_gpgcheck=1
+enabled=1
+# Cloudsmith's repository key and RabbitMQ package signing key
+gpgkey=https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-server.9F4587F226208342.key
+       https://github.com/rabbitmq/signing-keys/releases/download/3.0/rabbitmq-release-signing-key.asc
+gpgcheck=1
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+metadata_expire=300
+pkg_gpgcheck=1
+autorefresh=1
+type=rpm-md
+
+[rabbitmq-el9-noarch]
+name=rabbitmq-el9-noarch
+baseurl=https://yum2.rabbitmq.com/rabbitmq/el/9/noarch
+        https://yum1.rabbitmq.com/rabbitmq/el/9/noarch
+repo_gpgcheck=1
+enabled=1
+# Cloudsmith's repository key and RabbitMQ package signing key
+gpgkey=https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-server.9F4587F226208342.key
+       https://github.com/rabbitmq/signing-keys/releases/download/3.0/rabbitmq-release-signing-key.asc
+gpgcheck=1
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+metadata_expire=300
+pkg_gpgcheck=1
+autorefresh=1
+type=rpm-md
+
+[rabbitmq-el9-source]
+name=rabbitmq-el9-source
+baseurl=https://yum2.rabbitmq.com/rabbitmq/el/9/SRPMS
+        https://yum1.rabbitmq.com/rabbitmq/el/9/SRPMS
+repo_gpgcheck=1
+enabled=1
+gpgkey=https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-server.9F4587F226208342.key
+gpgcheck=0
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+metadata_expire=300
+pkg_gpgcheck=1
+autorefresh=1
+type=rpm-md
+
 rpm --import https://www.rabbitmq.com/rabbitmq-signing-key-public.asc
 
 # download installer
