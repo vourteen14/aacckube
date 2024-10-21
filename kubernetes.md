@@ -99,3 +99,5 @@ for i in `ls *.tar`; do sudo ctr -n k8s.io images import $i; done
 join control plane
 kubeadm init phase upload-certs --upload-certs
 kubeadm token create --print-join-command --certificate-key <certificate-key>
+
+echo "127.0.0.1 $(hostnamectl --static)" | sudo tee -a /etc/hosts
