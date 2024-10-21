@@ -100,4 +100,5 @@ join control plane
 kubeadm init phase upload-certs --upload-certs
 kubeadm token create --print-join-command --certificate-key <certificate-key>
 
-echo "127.0.0.1 $(hostnamectl --static)" | sudo tee -a /etc/hosts
+echo '127.0.0.1 '$(hostnamectl --static) | sudo tee -a /etc/hosts
+
