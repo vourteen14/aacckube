@@ -1,3 +1,10 @@
+sudo modprobe br_netfilter
+sudo modprobe ip_vs
+sudo modprobe ip_vs_rr
+sudo modprobe ip_vs_wrr
+sudo modprobe ip_vs_sh
+sudo modprobe overlay
+
 sudo dnf install -y yum-utils device-mapper-persistent-data lvm2 kernel-devel-$(uname -r)
 
 sudo bash -c 'cat > /etc/modules-load.d/kubernetes.conf << EOF
