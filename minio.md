@@ -31,3 +31,26 @@ mcli admin replicate add minio-01 minio-02
 
 mcli admin replicate info minio-01
 mcli admin replicate info minio-02
+
+frontend minio_frontend
+    bind *:9000
+    mode http
+
+    option httpchk GET /minio/health/live
+    http-check send meth GET uri /minio/health/live
+    default_backend minio_backend
+
+backend minio_backend
+    mode http
+    balance roundrobin
+
+    server minio-01 <minio-01-ip>:9000 check
+    server minio-02 <minio-02-ip>:9000 check
+
+    cookie SERVERID insert indirect nocache
+
+    timeout server 30s
+    timeout client 30s
+    retries 3
+
+    maxconn 1000
