@@ -1,5 +1,6 @@
 sudo dnf install keepalived -y
 
+sudo mv /etc/keepalived/keepalived.conf /etc/keepalived/keepalived.conf.bak
 sudo nano /etc/keepalived/keepalived.conf
 
 master
