@@ -79,3 +79,11 @@ wget https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/cu
 sed -i 's/cidr: 192\.168\.0\.0\/16/cidr: 10.244.0.0\/16/g' custom-resources.yaml
 
 kubectl create -f custom-resources.yaml
+
+export
+sudo ctr -n k8s.io images export <image>.tar <image>:<tag>
+
+import
+sudo ctr -n k8s.io images import <image>.tar
+
+
