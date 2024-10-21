@@ -67,7 +67,7 @@ EOF
 sudo dnf makecache 
 sudo dnf install -y kubelet kubeadm kubectl socat --disableexcludes=kubernetes
 
-systemctl enable --now kubelet.service
+sudo systemctl enable kubelet.service
 
 sudo kubeadm config images pull
 
