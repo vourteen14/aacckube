@@ -1,6 +1,9 @@
 wget https://dl.min.io/server/minio/release/linux-amd64/minio-20241013133411.0.0-1.x86_64.rpm
 sudo rpm -i minio-20241013133411.0.0-1.x86_64.rpm
 
+wget https://dl.min.io/server/minio/release/linux-amd64/archive/minio-20241002175041.0.0-1.x86_64.rpm -O minio.rpm
+sudo dnf install minio.rpm
+
 sudo groupadd -r minio-user
 sudo useradd -M -r -g minio-user minio-user
 sudo mkdir /mnt/data
