@@ -93,4 +93,5 @@ sudo ctr -n k8s.io images import <image>.tar
 
 for i in `seq 56 65`; do echo $i; done 
 
+for i in `ls *.tar`; do sudo ctr -n k8s.io images import $i; done
 
