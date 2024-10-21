@@ -86,4 +86,6 @@ sudo ctr -n k8s.io images export <image>.tar <image>:<tag>
 import
 sudo ctr -n k8s.io images import <image>.tar
 
+for i in `seq 56 65`; do echo $i; done 
+
 
