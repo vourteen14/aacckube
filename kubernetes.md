@@ -22,6 +22,8 @@ net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 EOF'
 
+sudo sed -i '/^net.ipv4.ip_forward/c\net.ipv4.ip_forward=1' /etc/sysctl.conf
+
 sudo sysctl --system
 
 sudo swapoff -a
@@ -31,6 +33,8 @@ sed -e '/swap/s/^/#/g' -i /etc/fstab
 sudo dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 
 sudo dnf makecache
+
+sudo dnf remove podman buildah
 
 sudo dnf -y install containerd.io
 
