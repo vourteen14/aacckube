@@ -97,6 +97,5 @@ for i in `ls *.tar`; do sudo ctr -n k8s.io images import $i; done
 
 
 join control plane
-kubeadm token create --print-join-command --certificate-key $(kubeadm init phase upload-certs --upload-certs)
-
-kubeadm join <control-plane-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash> --control-plane --certificate-key <certificate-key>
+kubeadm init phase upload-certs --upload-certs
+kubeadm token create --print-join-command --certificate-key <certificate-key>
