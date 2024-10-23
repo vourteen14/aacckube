@@ -41,3 +41,16 @@ node.master: false
 node.data: true
 
 sudo systemctl restart elasticsearch
+
+frontend elasticsearch_frontend
+    bind *:9200
+    mode http
+    default_backend elasticsearch_backend
+
+backend elasticsearch_backend
+    mode http
+    balance roundrobin
+    option httpchk GET /_cluster/health
+    server node1 node-1-ip:9200 check
+    server node2 node-2-ip:9200 check
+    server node3 node-3-ip:9200 check
