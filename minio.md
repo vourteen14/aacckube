@@ -18,7 +18,7 @@ MINIO_ROOT_PASSWORD=XxXs72jdcadr
 sudo systemctl start minio
 sudo systemctl status minio
 
-wget https://dl.min.io/client/mc/release/linux-amd64/mcli-20241008093726.0.0-1.x86_64.rpm
+wget https://dl.min.io/client/mc/release/linux-amd64/mcli-20241029153459.0.0-1.x86_64.rpm
 sudo rpm -i mcli-20241008093726.0.0-1.x86_64.rpm
 
 mcli alias set minio-01/ http://10.59.148.68:9000 adminminio XxXs72jdcadr
